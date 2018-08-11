@@ -5,8 +5,8 @@ import GamePage from "./GamePage";
 class LandingPage extends Component {
 
     state = {
-        isHomePageVisible : true,
-        isGamePageVisible: false
+        isHomePageVisible : false,
+        isGamePageVisible: true
     }
 
     getNames = (player1,player2) =>{
