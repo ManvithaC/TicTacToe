@@ -1,30 +1,78 @@
 import React, { Component } from 'react';
-import HomePage from './HomePage';
 import GamePage from "./GamePage";
+import RaisedButton from 'material-ui/RaisedButton';
 
 class LandingPage extends Component {
 
     state = {
-        isHomePageVisible : false,
-        isGamePageVisible: true
+        isNameInputsVisible : true,
+        isGamePageVisible: false,
+        isGameOver: false,
+        whoWon:'',
+        leaderBoardValues:[],
+        player1Name:"",
+        player2Name:"",
     }
 
-    getNames = (player1,player2) =>{
+    getGamePage = () =>{
         this.setState({
-            'isHomePageVisible' : !this.state.isHomePageVisible,
             'isGamePageVisible' : !this.state.isGamePageVisible,
+            'isNameInputsVisible' : !this.state.isNameInputsVisible,
         })
-        console.log(player1 + " " + player2);
     }
 
+    gameOver = (Winner) =>{
+        this.setState({
+            isGameOver: true,
+            whoWon:Winner,
+            'isGamePageVisible' : !this.state.isGamePageVisible,
+            'isNameInputsVisible' : !this.state.isNameInputsVisible,
+        })
+    }
+
+    getPlayer1Name = (event) =>{
+        this.setState({player1Name:event.target.value});
+    }
+
+    getPlayer2Name = (event) =>{
+        this.setState({player2Name:event.target.value});
+    }
     render() {
         return (
             <div>
                 <header>
                     <h3 className = "m-3">Tic-Tac-Toe</h3>
                 </header>
-                {this.state.isHomePageVisible ? <HomePage storePlayerNames={this.getNames}/> : ''}
-                {this.state.isGamePageVisible ? <GamePage/> : ''}
+                {this.state.isNameInputsVisible ? (
+                    <div>
+                        <div style={{'text-align':'center'}}>
+                            <input
+                                placeholder={"Enter player 1 Name"}
+                                className={"mb-3 p-3"}
+                                onChange={this.getPlayer1Name}
+                            />
+                            <br/>
+                            <input
+                                placeholder={"Enter player 2 Name"}
+                                className={"mb-3 p-3"}
+                                onChange={this.getPlayer2Name}
+                            />
+                            <br/>
+                        </div>
+                        <div style={{'text-align':'center'}}>
+                            <RaisedButton
+                                label="Play Game"
+                                primary={true}
+                                className={"mb-3"}
+                                onClick={this.getGamePage}
+                            /><br/>
+                        </div>
+                    </div>
+                ) : ''}
+                {this.state.isGamePageVisible ? <GamePage gameOver={this.gameOver}
+                                                          player1Name={this.state.player1Name}
+                                                          player2Name={this.state.player2Name}/> : ''}
+
             </div>
         );
     }
