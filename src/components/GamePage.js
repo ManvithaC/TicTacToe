@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
-
+import Dialog from 'material-ui/Dialog';
+import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 class GamePage extends Component {
 
     state = {
-        timerSet: true,
         startTime:'',
-        endTime:'',
         counter:0,
         positions:[],
-        gameOver:false,
-        whoseTurn:this.props.player1Name
+        whoseTurn:this.props.player1Name,
+        dialogBoxOpen: false,
+        winner:'',
+        timeTaken:'',
     }
 
-    checkForWin = (event,x,y) =>{
+    handleButtonClick = (event,x,y) =>{
         ((this.state.counter % 2) == 0 ) ? event.target.innerHTML = "X" : event.target.innerHTML = "O";
 
         var position = this.state.positions;
@@ -20,13 +22,11 @@ class GamePage extends Component {
 
         event.target.disabled = true;
         var updateCounter = this.state.counter + 1 ;
-        if(this.state.timerSet){
+        if(this.state.counter == 0){
             this.setState({
-                timerSet : false,
                 startTime : new Date(),
             })
         }
-
         if(event.target.innerHTML == "X"){
             this.setState({
                 counter: updateCounter,
@@ -40,17 +40,41 @@ class GamePage extends Component {
                 whoseTurn: this.props.player1Name
             })
         }
-        // if(position[0][2])
 
-        if(this.state.gameOver){
-            this.props.gameOver('X');
+        var winner = this.checkForWinner();
+        if(winner != null && winner != ""){
+
+            var timeTaken = ((new Date().getTime() - this.state.startTime.getTime() ) / 1000).toFixed(2);
+
+            this.setState({
+                dialogBoxOpen: true,
+                winner: winner,
+                timeTaken: timeTaken
+            });
+
+            this.props.addRecordToLeaderBoard(winner,event.target.innerHTML);
         }
     }
 
+    checkForWinner = () =>{
+        var winner = '';
+        if(this.state.counter == 2){
+            winner = this.props.player2Name;
+        }
+        return winner;
+    }
+
+    handleDialogClose = () => {
+        this.setState({
+            dialogBoxOpen: false,
+        });
+    };
+
     render() {
+
         return (
-            <div>
-                <div style={{'text-align':'center'}}>{this.state.whoseTurn}'s Turn</div>
+            <div >
+                <h2 style={{'text-align':'center'}}><strong>{this.state.whoseTurn}</strong> 's Turn</h2>
                 <div style={{'text-align':'center'}}>
                     {
                         [1,2,3].map( x =>
@@ -70,7 +94,7 @@ class GamePage extends Component {
                                                     'color':'white',
                                                     'margin':'auto'
                                                 }}
-                                                onClick={(event)=> this.checkForWin(event,x,y)}
+                                                onClick={(event)=> this.handleButtonClick(event,x,y)}
                                             />
                                         ))}
                                 </div>
@@ -78,7 +102,28 @@ class GamePage extends Component {
 
                     }
                 </div>
+                <Dialog
+                    modal={true}
+                    open={this.state.dialogBoxOpen}
+                >
+                    <div style={{'text-align':'center'}}>
+                        <h2>{this.state.winner} won in {this.state.timeTaken} secs!</h2>
+                        <RaisedButton
+                            label="Start Over"
+                            primary={true}
+                            className={"mb-3"}
+                            onClick={this.props.getLandingPage}
+                        />
+                        <FlatButton
+                            label="Cancel"
+                            primary={true}
+                            className={"mb-3 ml-3"}
+                            onClick={this.handleDialogClose}
+                        /><br/>
+                    </div>
+                </Dialog>
             </div>
+
         );
     }
 }
