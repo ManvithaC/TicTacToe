@@ -5,17 +5,26 @@ class GamePage extends Component {
     state = {
         timerSet: true,
         startTime:'',
-        endTime:''
+        endTime:'',
+        counter:0
     }
 
     checkForWin = (event,x,y) =>{
+        ((this.state.counter % 2) == 0 ) ? event.target.innerHTML = "X" : event.target.innerHTML = "O";
+        event.target.disabled = true;
+        var updateCounter = this.state.counter + 1 ;
         if(this.state.timerSet){
             this.setState({
-                timerSet: false,
-                startTime:new Date(),
+                timerSet : false,
+                startTime : new Date(),
+                counter: updateCounter ,
+            })
+        } else{
+            this.setState({
+                counter: updateCounter,
             })
         }
-        event.target.innerHTML = "X";
+        
     }
 
     render() {
