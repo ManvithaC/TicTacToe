@@ -118,7 +118,7 @@ class LandingPage extends Component {
                             <h3><strong>Statistics</strong></h3>
                             {this.state.leaderBoard.map( (x,index) => (
                                 <div>
-                                    {index+1}. <span>{x.WinnerName}({x.XorO}): {x.numberOfWins} {x.numberOfWins == 1 ? 'game' : 'games'} won</span>
+                                    {index+1}. <span>{x.WinnerName} ({x.XorO}): {x.numberOfWins} {x.numberOfWins == 1 ? 'game' : 'games'} won</span>
                                 </div>
                             ))}
                             <br/>
