@@ -11,11 +11,9 @@ class LandingPage extends Component {
         leaderBoardValues:[],
         player1Name:"",
         player2Name:"",
-        leaderBoard:[
-            {WinnerName : 'Mike', XorO : 'X', numberOfWins: 2},
-            {WinnerName : 'Manvi', XorO : 'X', numberOfWins: 2},
-            {WinnerName : 'Jes', XorO : 'O', numberOfWins: 1},
-        ]
+        leaderBoard:[],
+        fastestTime:0,
+        slowestTime:0
     }
 
     getGamePage = () =>{
@@ -40,18 +38,40 @@ class LandingPage extends Component {
         this.setState({player2Name:event.target.value});
     }
 
-    addRecordToLeaderBoard = (winner, XorO) =>{
+    addRecordToLeaderBoard = (winner, XorO,timeTaken) =>{
         var leaderBoardRecord = this.state.leaderBoard;
         var shouldPushEntry = true;
-        leaderBoardRecord.map( (x) => {
-                if(shouldPushEntry && x.WinnerName == winner && x.XorO == XorO){
-                    x.numberOfWins = x.numberOfWins + 1;
-                    shouldPushEntry = false;
-                }
-        })
-        shouldPushEntry ? leaderBoardRecord.push({WinnerName : winner, XorO : XorO, numberOfWins: 1}) : '';
-        this.setState({leaderBoard:leaderBoardRecord});
 
+        leaderBoardRecord.map( (x) => {
+            if(shouldPushEntry && x.WinnerName == winner && x.XorO == XorO){
+                x.numberOfWins = x.numberOfWins + 1;
+                shouldPushEntry = false;
+            }
+        })
+        // if(leaderBoardRecord.length == 3){
+        //     leaderBoardRecord.pop();
+        // }
+        shouldPushEntry ? leaderBoardRecord.push({WinnerName : winner, XorO : XorO, numberOfWins: 1, timeTaken:timeTaken}) : '';
+        this.updateTimeStatistics(winner,timeTaken);
+        this.setState({
+            leaderBoard:leaderBoardRecord.reverse()
+        });
+    }
+
+    updateTimeStatistics = (winner,timeTaken) =>{
+        console.log("timeTaken" + timeTaken);
+        var fastestTime = this.state.fastestTime;
+        var slowestTime = this.state.slowestTime;
+        if( fastestTime === 0 || fastestTime > timeTaken ){
+            this.setState({
+                fastestTime: timeTaken
+            });
+        }
+        if( slowestTime === 0 ||slowestTime < timeTaken ){
+            this.setState({
+                slowestTime: timeTaken
+            });
+        }
     }
     render() {
         return (
@@ -95,18 +115,27 @@ class LandingPage extends Component {
                                       addRecordToLeaderBoard={this.addRecordToLeaderBoard}/>
                         </div>
                         <div className={'col-md-3'}>
-                            <h3>Statistics</h3>
+                            <h3><strong>Statistics</strong></h3>
                             {this.state.leaderBoard.map( (x,index) => (
                                 <div>
                                     {index+1}. <span>{x.WinnerName}({x.XorO}): {x.numberOfWins} {x.numberOfWins == 1 ? 'game' : 'games'} won</span>
                                 </div>
                             ))}
-                            {
-                                    <RaisedButton
-                                        label="Start Over"
-                                        className={"mb-3 mt-3"}
-                                        onClick={this.gameOver}/>
-                            }
+                            <br/>
+                            <br/>
+                            <div>
+                                <span><strong>Fastest time</strong>: </span>
+                                {this.state.fastestTime+' secs'}
+                            </div>
+                            <div>
+                                <span><strong>Slowest time</strong>: </span>
+                                {this.state.slowestTime+' secs'}
+                            </div>
+                            <RaisedButton
+                                label="Start Over"
+                                className={"mb-3 mt-3"}
+                                onClick={this.gameOver}/>
+
                         </div>
                     </div>): ''}
 

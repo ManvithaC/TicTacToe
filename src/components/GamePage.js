@@ -3,7 +3,23 @@ import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 class GamePage extends Component {
+    componentWillMount () {
 
+        var arr = new Array(3);
+        for (var i = 0; i < arr.length; ++i) {
+            arr[i] = new Array(3);
+        }
+        for (var i = 0; i < arr.length; ++i) {
+            for (var j = 0; j < arr.length; ++j) {
+                arr[i][j] = 'e';
+            }
+        }
+
+        this.setState({
+            positions:arr
+        })
+
+    }
     state = {
         startTime:'',
         counter:0,
@@ -18,7 +34,8 @@ class GamePage extends Component {
         ((this.state.counter % 2) == 0 ) ? event.target.innerHTML = "X" : event.target.innerHTML = "O";
 
         var position = this.state.positions;
-        position.push([x,y,event.target.innerHTML]);
+        // position.push([x,y,event.target.innerHTML]);
+        position[x][y] = event.target.innerHTML;
 
         event.target.disabled = true;
         var updateCounter = this.state.counter + 1 ;
@@ -44,7 +61,7 @@ class GamePage extends Component {
         var winner = this.checkForWinner();
         if(winner != null && winner != ""){
 
-            var timeTaken = ((new Date().getTime() - this.state.startTime.getTime() ) / 1000).toFixed(2);
+            var timeTaken = ((new Date().getTime() - (this.state.startTime).getTime() ) / 1000).toFixed(2);
 
             this.setState({
                 dialogBoxOpen: true,
@@ -52,15 +69,26 @@ class GamePage extends Component {
                 timeTaken: timeTaken
             });
 
-            this.props.addRecordToLeaderBoard(winner,event.target.innerHTML);
+            this.props.addRecordToLeaderBoard(winner,event.target.innerHTML,timeTaken);
         }
     }
 
     checkForWinner = () =>{
         var winner = '';
-        if(this.state.counter == 2){
-            winner = this.props.player2Name;
-        }
+        var position = this.state.positions;
+
+        if((position[0][0] === position[0][1]) && (position[0][1] === position[0][2]) && position[0][0] != "e")winner = this.state.whoseTurn;
+        else if((position[1][0] === position[1][1]) && (position[1][1] === position[1][2]) && position[1][0] != "e")winner = this.state.whoseTurn;
+        else if((position[2][0] === position[2][1]) && (position[2][1] === position[2][2]) && position[2][0] != "e")winner = this.state.whoseTurn;
+        else if((position[0][0] === position[1][0]) && (position[1][0] === position[2][0]) && position[0][0] != "e")winner = this.state.whoseTurn;
+        else if((position[0][1] === position[1][1]) && (position[1][1] === position[2][1]) && position[0][1] != "e")winner = this.state.whoseTurn;
+        else if((position[0][2] === position[1][2]) && (position[1][2] === position[2][2]) && position[0][2] != "e")winner = this.state.whoseTurn;
+        else if((position[0][0] === position[1][1]) && (position[1][1] === position[2][2]) && position[0][0] != "e")winner = this.state.whoseTurn;
+        else if((position[0][2] === position[1][1]) && (position[1][1] === position[2][0]) && position[0][3] != "e")winner = this.state.whoseTurn;
+
+        // if(this.state.counter == 2){
+        //     winner = this.props.whoseTurn;
+        // }
         return winner;
     }
 
@@ -77,11 +105,11 @@ class GamePage extends Component {
                 <h2 style={{'text-align':'center'}}><strong>{this.state.whoseTurn}</strong> 's Turn</h2>
                 <div style={{'text-align':'center'}}>
                     {
-                        [1,2,3].map( x =>
+                        [0,1,2].map( x =>
                             (
                                 <div>
                                     {
-                                        [1,2,3].map( y => (
+                                        [0,1,2].map( y => (
                                             <button
                                                 className={"btn m-1"}
                                                 style={{
