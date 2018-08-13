@@ -45,7 +45,8 @@ export default class GamePage extends Component {
             positions: position,
             whoseTurn: event.target.innerHTML === "X" ? this.props.player2Name : this.props.player1Name
         })
-        let winner = this.checkForWinner();
+        let winner = '';
+        if(this.state.counter > 4) winner = this.checkForWinner(); //There should be at least 5 turns to decide winner
         if(winner != null && winner !== ""){
 
             //calculate the time taken from the first 'X' to the end of the game
@@ -64,15 +65,14 @@ export default class GamePage extends Component {
         let winner = '';
         let position = this.state.positions;
 
-        if((position[0][0] === position[0][1]) && (position[0][1] === position[0][2]) && position[0][0] !== 'e')winner = this.state.whoseTurn;
-        else if((position[1][0] === position[1][1]) && (position[1][1] === position[1][2]) && position[1][0] !== 'e')winner = this.state.whoseTurn;
-        else if((position[2][0] === position[2][1]) && (position[2][1] === position[2][2]) && position[2][0] !== 'e')winner = this.state.whoseTurn;
-        else if((position[0][0] === position[1][0]) && (position[1][0] === position[2][0]) && position[0][0] !== 'e')winner = this.state.whoseTurn;
-        else if((position[0][1] === position[1][1]) && (position[1][1] === position[2][1]) && position[0][1] !== 'e')winner = this.state.whoseTurn;
-        else if((position[0][2] === position[1][2]) && (position[1][2] === position[2][2]) && position[0][2] !== 'e')winner = this.state.whoseTurn;
-        else if((position[0][0] === position[1][1]) && (position[1][1] === position[2][2]) && position[0][0] !== 'e')winner = this.state.whoseTurn;
-        else if((position[0][2] === position[1][1]) && (position[1][1] === position[2][0]) && position[0][2] !== 'e')winner = this.state.whoseTurn;
-
+            if ((position[0][0] === position[0][1]) && (position[0][1] === position[0][2]) && position[0][0] !== 'e') winner = this.state.whoseTurn;
+            else if ((position[1][0] === position[1][1]) && (position[1][1] === position[1][2]) && position[1][0] !== 'e') winner = this.state.whoseTurn;
+            else if ((position[2][0] === position[2][1]) && (position[2][1] === position[2][2]) && position[2][0] !== 'e') winner = this.state.whoseTurn;
+            else if ((position[0][0] === position[1][0]) && (position[1][0] === position[2][0]) && position[0][0] !== 'e') winner = this.state.whoseTurn;
+            else if ((position[0][1] === position[1][1]) && (position[1][1] === position[2][1]) && position[0][1] !== 'e') winner = this.state.whoseTurn;
+            else if ((position[0][2] === position[1][2]) && (position[1][2] === position[2][2]) && position[0][2] !== 'e') winner = this.state.whoseTurn;
+            else if ((position[0][0] === position[1][1]) && (position[1][1] === position[2][2]) && position[0][0] !== 'e') winner = this.state.whoseTurn;
+            else if ((position[0][2] === position[1][1]) && (position[1][1] === position[2][0]) && position[0][2] !== 'e') winner = this.state.whoseTurn;
         return winner;
     }
 
@@ -92,15 +92,16 @@ export default class GamePage extends Component {
                                     {
                                         [0,1,2].map( y => (
                                             <button
-                                                className={"btn m-1"}
+                                                className={"btn"}
                                                 style={{
                                                     'height' : '100px',
                                                     'width' : '100px',
-                                                    'background-color':'#00BCD4',
+                                                    'background-color':'white',
                                                     'border-radius':'0.1px',
+                                                    'border':'solid grey 1px',
                                                     'font-size':'70px',
                                                     'text-align':'center',
-                                                    'color':'white',
+                                                    'color':'black',
                                                     'margin':'auto'
                                                 }}
                                                 onClick={(event)=> this.handleButtonClick(event,x,y)}

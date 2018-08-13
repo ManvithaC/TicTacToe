@@ -29,8 +29,8 @@
       <file leaf-file-name="LandingPage.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/LandingPage.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="136" selection-start-line="136" selection-end-line="136" />
+            <state relative-caret-position="1734">
+              <caret line="102" column="116" selection-start-line="102" selection-start-column="116" selection-end-line="102" selection-end-column="116" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -41,8 +41,8 @@
       <file leaf-file-name="GamePage.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/GamePage.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="918">
-              <caret line="54" column="31" lean-forward="true" selection-start-line="54" selection-start-column="31" selection-end-line="54" selection-end-column="31" />
+            <state relative-caret-position="255">
+              <caret line="100" column="78" selection-start-line="100" selection-start-column="78" selection-end-line="100" selection-end-column="78" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -219,12 +219,12 @@
       <option name="presentableId" value="Default" />
       <updated>1534001735384</updated>
       <workItem from="1534001736899" duration="14179000" />
-      <workItem from="1534025075108" duration="38356000" />
+      <workItem from="1534025075108" duration="40867000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="52535000" />
+    <option name="totallyTimeSpent" value="55046000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="0" width="1276" height="696" extended-state="0" />
@@ -348,8 +348,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/LandingPage.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="136" selection-start-line="136" selection-end-line="136" />
+        <state relative-caret-position="1734">
+          <caret line="102" column="116" selection-start-line="102" selection-start-column="116" selection-end-line="102" selection-end-column="116" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
@@ -358,8 +358,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/GamePage.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="918">
-          <caret line="54" column="31" lean-forward="true" selection-start-line="54" selection-start-column="31" selection-end-line="54" selection-end-column="31" />
+        <state relative-caret-position="255">
+          <caret line="100" column="78" selection-start-line="100" selection-start-column="78" selection-end-line="100" selection-end-column="78" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>

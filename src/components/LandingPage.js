@@ -26,13 +26,13 @@ export default class LandingPage extends Component {
         this.setState({player2Name:event.target.value});
     }
 
-    addRecordToLeaderBoard = (winner, XorO,timeTaken) =>{
+    addRecordToLeaderBoard = (winner, XorO ,timeTaken) =>{
         var leaderBoardRecord = this.state.leaderBoard;
         var shouldPushEntry = true;
 
         leaderBoardRecord.map( (x) => { //Update the count of the wins if the name is already there
             if(shouldPushEntry && x.WinnerName === winner && x.XorO === XorO){
-                x.numberOfWins = x.numberOfWins + 1;
+                x.numberOfWins =+ 1;
                 shouldPushEntry = false;
             }
         })
@@ -52,18 +52,10 @@ export default class LandingPage extends Component {
     }
 
     updateTimeStatistics = (winner,timeTaken) =>{
-        var fastestTime = this.state.fastestTime;
-        var slowestTime = this.state.slowestTime;
-        if( fastestTime === 0 || fastestTime > timeTaken ){
-            this.setState({
-                fastestTime: timeTaken
-            });
-        }
-        if( slowestTime === 0 ||slowestTime < timeTaken ){
-            this.setState({
-                slowestTime: timeTaken
-            });
-        }
+        let fastestTime = this.state.fastestTime;
+        let slowestTime = this.state.slowestTime;
+        if( fastestTime === 0 || fastestTime > timeTaken )this.setState({fastestTime: timeTaken});
+        if( slowestTime === 0 ||slowestTime < timeTaken )this.setState({slowestTime: timeTaken});
     }
     render() {
         return (
@@ -108,7 +100,7 @@ export default class LandingPage extends Component {
                             <h3><strong>Statistics</strong></h3>
                             {(this.state.leaderBoard).map( (x,index) => (
                                 <div>
-                                    {index+1}. <span>{x.WinnerName} ({x.XorO}): {x.numberOfWins} {x.numberOfWins == 1 ? 'game' : 'games'} won</span>
+                                    {index+1}. <span>{x.WinnerName} ({x.XorO}): {x.numberOfWins} {x.numberOfWins === 1 ? 'game' : 'games'} won</span>
                                 </div>
                             ))}
                             <br/>
