@@ -2,24 +2,8 @@ import React, { Component } from 'react';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
-class GamePage extends Component {
-    componentWillMount () {
+export default class GamePage extends Component {
 
-        var arr = new Array(3);
-        for (var i = 0; i < arr.length; ++i) {
-            arr[i] = new Array(3);
-        }
-        for (var i = 0; i < arr.length; ++i) {
-            for (var j = 0; j < arr.length; ++j) {
-                arr[i][j] = 'e';
-            }
-        }
-
-        this.setState({
-            positions:arr
-        })
-
-    }
     state = {
         startTime:'',
         counter:0,
@@ -29,53 +13,56 @@ class GamePage extends Component {
         winner:'',
         timeTaken:'',
     }
+    componentWillMount () {
+
+        let arr = new Array(3);
+        for (let i = 0; i < arr.length; ++i) {
+            arr[i] = new Array(3);
+        }
+        for (let i = 0; i < arr.length; ++i) {
+            for (let j = 0; j < arr.length; ++j) {
+                arr[i][j] = 'e';
+            }
+        }
+        this.setState({positions:arr})
+    }
 
     handleButtonClick = (event,x,y) =>{
-        ((this.state.counter % 2) == 0 ) ? event.target.innerHTML = "X" : event.target.innerHTML = "O";
+        ((this.state.counter % 2) === 0 ) ? event.target.innerHTML = "X" : event.target.innerHTML = "O";
 
-        var position = this.state.positions;
-        // position.push([x,y,event.target.innerHTML]);
+        let position = this.state.positions;
         position[x][y] = event.target.innerHTML;
 
+        //disable the tile that has been clicked
         event.target.disabled = true;
-        var updateCounter = this.state.counter + 1 ;
-        if(this.state.counter == 0){
-            this.setState({
-                startTime : new Date(),
-            })
+        let updateCounter = this.state.counter + 1 ;
+
+        if(this.state.counter === 0){ // start the timer on the first click
+            this.setState({startTime : new Date()});
         }
-        if(event.target.innerHTML == "X"){
-            this.setState({
-                counter: updateCounter,
-                positions: position,
-                whoseTurn: this.props.player2Name
-            })
-        } else {
-            this.setState({
-                counter: updateCounter,
-                positions: position,
-                whoseTurn: this.props.player1Name
-            })
-        }
+        this.setState({
+            counter: updateCounter,
+            positions: position,
+            whoseTurn: event.target.innerHTML === "X" ? this.props.player2Name : this.props.player1Name
+        })
+        let winner = this.checkForWinner();
+        if(winner != null && winner !== ""){
 
-        var winner = this.checkForWinner();
-        if(winner != null && winner != ""){
-
-            var timeTaken = ((new Date().getTime() - (this.state.startTime).getTime() ) / 1000).toFixed(2);
-
+            //calculate the time taken from the first 'X' to the end of the game
+            let timeTaken = ((new Date().getTime() - (this.state.startTime).getTime() ) / 1000).toFixed(2);
             this.setState({
                 dialogBoxOpen: true,
                 winner: winner,
-                timeTaken: timeTaken
+                timeTaken: timeTaken,
+                whoseTurn:''
             });
-
             this.props.addRecordToLeaderBoard(winner,event.target.innerHTML,timeTaken);
         }
     }
 
     checkForWinner = () =>{
-        var winner = '';
-        var position = this.state.positions;
+        let winner = '';
+        let position = this.state.positions;
 
         if((position[0][0] === position[0][1]) && (position[0][1] === position[0][2]) && position[0][0] !== 'e')winner = this.state.whoseTurn;
         else if((position[1][0] === position[1][1]) && (position[1][1] === position[1][2]) && position[1][0] !== 'e')winner = this.state.whoseTurn;
@@ -89,17 +76,14 @@ class GamePage extends Component {
         return winner;
     }
 
-    handleDialogClose = () => {
-        this.setState({
-            dialogBoxOpen: false,
-        });
-    };
+    handleDialogClose = () => this.setState({dialogBoxOpen: false});
 
     render() {
-
         return (
             <div >
-                <h2 style={{'text-align':'center'}}><strong>{this.state.whoseTurn}</strong> 's Turn</h2>
+                <h2 style={{'text-align':'center'}}>
+                    {this.state.whoseTurn !== '' ? this.state.whoseTurn+" 's Turn" : ''}
+                </h2>
                 <div style={{'text-align':'center'}}>
                     {
                         [0,1,2].map( x =>
@@ -137,7 +121,7 @@ class GamePage extends Component {
                             label="Start Over"
                             primary={true}
                             className={"mb-3"}
-                            onClick={this.props.getLandingPage}
+                            onClick={this.props.toggleGameAndNameInputsScreen}
                         />
                         <FlatButton
                             label="Cancel"
@@ -152,5 +136,3 @@ class GamePage extends Component {
         );
     }
 }
-
-export default GamePage;
