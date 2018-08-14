@@ -18,13 +18,9 @@ export default class LandingPage extends Component {
         this.setState({'isNameInputsVisible' : !this.state.isNameInputsVisible})
     }
 
-    getPlayer1Name = (event) =>{
-        this.setState({player1Name:event.target.value});
-    }
+    getPlayer1Name = (event) => this.setState({player1Name:event.target.value});
 
-    getPlayer2Name = (event) =>{
-        this.setState({player2Name:event.target.value});
-    }
+    getPlayer2Name = (event) => this.setState({player2Name:event.target.value});
 
     addRecordToLeaderBoard = (winner, XorO ,timeTaken) =>{
         var leaderBoardRecord = this.state.leaderBoard;
@@ -36,9 +32,7 @@ export default class LandingPage extends Component {
                 shouldPushEntry = false;
             }
         })
-        if(leaderBoardRecord.length === 10){ // If Leader board reaches 10 values, remove the last added element
-            leaderBoardRecord.pop();
-        }
+        if(leaderBoardRecord.length === 10) leaderBoardRecord.pop();// If Leader board reaches 10 values, remove the last added element
 
         //Push the entry at the top of array
         shouldPushEntry ? leaderBoardRecord.unshift({WinnerName : winner, XorO : XorO, numberOfWins: 1, timeTaken:timeTaken}) : '';
@@ -46,9 +40,7 @@ export default class LandingPage extends Component {
         //Check for fastest and slowest times for every game and update the times
         this.updateTimeStatistics(winner,timeTaken);
 
-        this.setState({
-            leaderBoard:leaderBoardRecord
-        });
+        this.setState({leaderBoard:leaderBoardRecord});
     }
 
     updateTimeStatistics = (winner,timeTaken) =>{
@@ -65,7 +57,7 @@ export default class LandingPage extends Component {
                 </header>
                 {this.state.isNameInputsVisible ? (
                     <div>
-                        <div style={{'text-align':'center'}}>
+                        <div style={{'textAlign':'center'}}>
                             <input
                                 placeholder={"Enter player 1 Name"}
                                 className={"mb-3 p-3"}
@@ -79,7 +71,7 @@ export default class LandingPage extends Component {
                             />
                             <br/>
                         </div>
-                        <div style={{'text-align':'center'}}>
+                        <div style={{'textAlign':'center'}}>
                             <RaisedButton
                                 label="Play Game"
                                 primary={true}
@@ -106,18 +98,11 @@ export default class LandingPage extends Component {
                             <br/>
                             <br/>
                             <div>
-                                <span><strong>Fastest time</strong>: </span>
-                                {this.state.fastestTime+' secs'}
+                                <span><strong>Fastest time</strong>: </span>{this.state.fastestTime+' secs'}
                             </div>
                             <div>
-                                <span><strong>Slowest time</strong>: </span>
-                                {this.state.slowestTime+' secs'}
+                                <span><strong>Slowest time</strong>: </span>{this.state.slowestTime+' secs'}
                             </div>
-                            <RaisedButton
-                                label="Start Over"
-                                className={"mb-3 mt-3"}
-                                onClick={this.toggleGameAndNameInputsScreen}/>
-
                         </div>
                     </div>)
                 }
